@@ -2,7 +2,7 @@
 import datetime
 
 from itemsforsale import ItemsForSale, Menu, Drink, Food
-
+from time import gmtime, strftime
 
 # instantiate all drinks with correct name and price
 
@@ -47,7 +47,30 @@ m1.add_food(f4)
 m1.add_food(f5)
 m1.add_food(f6)
 
-print("Welcome to Megabyte")
+print("Welcome to Megabyte.")
+user_name = input("What is your name?: ").capitalize()
+print(f"Hi {user_name}! Have a look at our menu")
+
+
+# init file
+        
+
+actual_time = strftime("%Y-%m-%d %H-%M-%S", gmtime())
+filename = "orders - " + str(actual_time) + ".txt"
+
+outfile = open(filename, "w")
+# with open('orders.txt', 'a') as outfile:
+outfile.write('\n')
+outfile.write('\n')
+outfile.write(f"Order made by: {user_name}\n")
+outfile.write('\n')
+outfile.write("megabytes Order")
+outfile.write('\n')
+outfile.write(str(datetime.datetime.now()))
+outfile.write('\n')
+outfile.close()
+
+
 
 # Define function to show food menu
 def show_food(menu_items):
@@ -84,18 +107,23 @@ def take_food_order(menu_items):
             food_item = menu_items[int(item_num) - 1]
             food_order.append(food_item)
             # IMPORTANT place in while loop for integrity
-            food_quantity_input = int(input("How many do you want?    "))          
-            food_quantity.append(food_quantity_input)                               
-            food_cost = food_item.price * float(food_quantity[counter])                 
-            total_food_cost += food_cost                                                
-            counter += 1                                                                
-        else:
-            print("Invalid item number. Please try again.")
-
+            
+            food_quantity_input = input("How many do you want?    ")
+            
+            if food_quantity_input.isdigit()>0 and food_quantity_input.isdigit()<7:
+                
+                food_quantity.append(food_quantity_input)                 
+                food_cost = food_item.price * float(food_quantity[counter])                 
+                total_food_cost += round(float(food_cost),3)                                                
+                counter += 1 
+                print("Would you like to order anything else?")      
+              
+            else:
+                print("Invalid item number. Please try again.")
     print("\nYour Food Order:")
     for i, item in enumerate(food_order, start=1):
          print(f"{i}. {item.name}, x{food_quantity[ i-1 ]} - £{item.price}") 
-         with open('orders.txt', 'a') as outfile:
+         with open(filename, 'a') as outfile:
             outfile.write('\n')
             outfile.write(item.name)    
             outfile.write('\n')
@@ -108,10 +136,11 @@ def take_food_order(menu_items):
 
 
     print(f"Total Cost: £{total_food_cost}")
-    with open('orders.txt', 'a') as outfile:
+    with open(filename, 'a') as outfile:
         outfile.write('\n')
         outfile.write("Total Food Cost is  £")
-        outfile.write(str(total_food_cost))                                       
+        outfile.write(str(total_food_cost))
+        outfile.write('\n')
 ### QUESTION have we got this twice, test         
     # print(f"The order cost is {total_food_cost} ")
     print(datetime.datetime.now())
@@ -134,12 +163,14 @@ def take_drink_order(menu_items):
             # Add selected item to the order
             drink_item = menu_items[int(item_num) - 1]
             drink_order.append(drink_item)
-            drink_quantity_input = int(input("How many do you want?    "))           
-            drink_quantity.append(drink_quantity_input)                               
+            drink_quantity_input = input("How many do you want?    ")
+            if drink_quantity_input.isdigit()>0 and drink_quantity_input.isdigit()<7:
+                drink_quantity.append(drink_quantity_input)                            
             drink_cost = drink_item.price * float(drink_quantity[counter])                 
-            total_drink_cost += drink_cost                                                
-            counter += 1                                                                
-            drink_cost += drink_item.price
+            total_drink_cost += (round(float(drink_cost),3))                                               
+            counter += 1  
+            print("Would you like to order anything else?")
+            drink_cost += (drink_item.price)
         else:
             print("Invalid item number. Please try again.")
 
@@ -147,36 +178,26 @@ def take_drink_order(menu_items):
     print("\nYour Drink Order:")
     ### QUESTION should we open the file here and write the following to the file instead of the current method?
     for i, item in enumerate(drink_order, start=1):
-        with open('orders.txt', 'a') as outfile:
-            outfile.write('\n')
-            outfile.write(item.name)    
-            outfile.write('\n')
-            outfile.write("Quantity  ")
-            outfile.write(str(drink_quantity[ i-1 ]))
-            outfile.write('\n')
-            outfile.write("Item price  ")
-            outfile.write(str(item.price))
-            outfile.write('\n')
+      with open(filename, 'a') as outfile:
+        outfile.write('\n')
+        outfile.write(item.name)    
+        outfile.write('\n')
+        outfile.write("Quantity  ")
+        outfile.write(str(drink_quantity[ i-1 ]))
+        outfile.write('\n')
+        outfile.write("Item price  ")
+        outfile.write(str(item.price))
+        outfile.write('\n')
 
         print(f"{i}. {item.name}, x{drink_quantity[ i-1 ]} - £{item.price}")   ### QUESTION SHOULD THIS BE IN THE LOOP LIKE FOOD
     print(f"Total Cost: £{total_drink_cost}")
-    with open('orders.txt', 'a') as outfile:
-        outfile.write('\n')
-        outfile.write("Total Drink Cost is  £")
-        outfile.write(str(total_drink_cost))               ### WRITE TO FILE ?
+    with open(filename, 'a') as outfile:
+      outfile.write('\n')
+      outfile.write("Total Drink Cost is  £")
+      outfile.write(str(total_drink_cost))             ### WRITE TO FILE ?
 
 # Prompt user to order
 
-
-# init file
-
-with open('orders.txt', 'a') as outfile:
-    outfile.write('\n')
-    outfile.write('\n')
-    outfile.write("megabytes Order")
-    outfile.write('\n')
-    outfile.write(str(datetime.datetime.now()))
-    outfile.write('\n')
 
 # Loop to handle orders
 
@@ -192,9 +213,12 @@ while start_order != "0":
         print("Invalid option. Please enter '1' for food, '2' for drinks, or '0' to exit.")
 
     # Prompt user again for their order
-    start_order = input("\nWhat would you like to order? (1 for Food) or (2 for Drinks) (enter '0' to exit): ")
+    start_order = input("\nWould you like to order anything else? (1 for Food) or (2 for Drinks) (enter '0' to exit): ")
 
-print("Thank you for your order!")
-file1 = open("orders.txt", "r")
+print(f"Thank you for your order {user_name}!")
+file1 = open(filename, "r")
 print(file1.read())
 file1.close() 
+
+
+### FURTHER WORK ADD NAME AND RDER TO RECIEPTTOTAL O
