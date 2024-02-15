@@ -56,7 +56,7 @@ print(f"Hi {user_name}! Have a look at our menu")
         
 
 actual_time = strftime("%Y-%m-%d %H-%M-%S", gmtime())
-filename = "orders - " + str(actual_time) + ".txt"
+filename = user_name + " - " + str(actual_time) + ".txt"
 
 outfile = open(filename, "w")
 # with open('orders.txt', 'a') as outfile:
@@ -70,6 +70,9 @@ outfile.write(str(datetime.datetime.now()))
 outfile.write('\n')
 outfile.close()
 
+# init global vars
+total_food_cost = 0
+total_drink_cost = 0
 
 
 # Define function to show food menu
@@ -90,11 +93,12 @@ show_drinks(m1.drinks)
 
 # Define function to take food order
 def take_food_order(menu_items):
+    global total_food_cost
     food_order = []
     food_cost = 0
     food_quantity= []                                          
     counter = 0                                                 
-    total_food_cost = 0                                         
+    # total_food_cost = 0                                         
     # Loop to take food orders
     while True:
         # Prompt user to select an item
@@ -137,7 +141,7 @@ def take_food_order(menu_items):
 
     print(f"Total Cost: £{total_food_cost}")
     with open(filename, 'a') as outfile:
-        outfile.write('\n')
+        # outfile.write('\n')
         outfile.write("Total Food Cost is  £")
         outfile.write(str(total_food_cost))
         outfile.write('\n')
@@ -148,11 +152,12 @@ def take_food_order(menu_items):
 
 # Define function to take drink order
 def take_drink_order(menu_items):
+    global total_drink_cost
     drink_order = []
     drink_cost = 0
     drink_quantity= []                                          
     counter = 0                                                 
-    total_drink_cost = 0                                        
+    # total_drink_cost = 0                                        
     # Loop to take drink orders
     while True:
         # Prompt user to select an item
@@ -192,10 +197,11 @@ def take_drink_order(menu_items):
         print(f"{i}. {item.name}, x{drink_quantity[ i-1 ]} - £{item.price}")   ### QUESTION SHOULD THIS BE IN THE LOOP LIKE FOOD
     print(f"Total Cost: £{total_drink_cost}")
     with open(filename, 'a') as outfile:
-      outfile.write('\n')
+      # outfile.write('\n')
       outfile.write("Total Drink Cost is  £")
+      # outfile.write('\n')
       outfile.write(str(total_drink_cost))             ### WRITE TO FILE ?
-
+    
 # Prompt user to order
 
 
@@ -215,10 +221,18 @@ while start_order != "0":
     # Prompt user again for their order
     start_order = input("\nWould you like to order anything else? (1 for Food) or (2 for Drinks) (enter '0' to exit): ")
 
+
+total_order_value =  total_drink_cost + total_food_cost
+print(f"\nTotal Order Cost: {total_order_value}")
+with open(filename, 'a') as outfile:
+   outfile.write('\n')
+   outfile.write("Total Order Cost is  £")
+   outfile.write(str(total_order_value))
+   outfile.write('\n')
+
+
+
 print(f"Thank you for your order {user_name}!")
 file1 = open(filename, "r")
 print(file1.read())
 file1.close() 
-
-
-### FURTHER WORK ADD NAME AND RDER TO RECIEPTTOTAL O
