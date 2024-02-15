@@ -1,4 +1,5 @@
 # import classes
+import datetime
 
 from itemsforsale import ItemsForSale, Menu, Drink, Food
 
@@ -68,6 +69,9 @@ show_drinks(m1.drinks)
 def take_food_order(menu_items):
     food_order = []
     food_cost = 0
+    food_quantity= []                                          
+    counter = 0                                                 
+    total_food_cost = 0                                         
     # Loop to take food orders
     while True:
         # Prompt user to select an item
@@ -75,22 +79,51 @@ def take_food_order(menu_items):
         if item_num == '0':
             break
         elif item_num.isdigit() and 1 <= int(item_num) <= len(menu_items):
+
             # Add selected item to the order
             food_item = menu_items[int(item_num) - 1]
             food_order.append(food_item)
-            food_cost += food_item.price
+            # IMPORTANT place in while loop for integrity
+            food_quantity_input = int(input("How many do you want?    "))          
+            food_quantity.append(food_quantity_input)                               
+            food_cost = food_item.price * float(food_quantity[counter])                 
+            total_food_cost += food_cost                                                
+            counter += 1                                                                
         else:
             print("Invalid item number. Please try again.")
 
     print("\nYour Food Order:")
     for i, item in enumerate(food_order, start=1):
-        print(f"{i}. {item.name} - £{item.price}")
-    print(f"Total Cost: £{food_cost}")
+         print(f"{i}. {item.name}, x{food_quantity[ i-1 ]} - £{item.price}") 
+         with open('orders.txt', 'a') as outfile:
+            outfile.write('\n')
+            outfile.write(item.name)    
+            outfile.write('\n')
+            outfile.write("Quantity  ")
+            outfile.write(str(food_quantity[ i-1 ]))
+            outfile.write('\n')
+            outfile.write("Item price  ")
+            outfile.write(str(item.price))
+            outfile.write('\n')
+
+
+    print(f"Total Cost: £{total_food_cost}")
+    with open('orders.txt', 'a') as outfile:
+        outfile.write('\n')
+        outfile.write("Total Food Cost is  £")
+        outfile.write(str(total_food_cost))                                       
+### QUESTION have we got this twice, test         
+    # print(f"The order cost is {total_food_cost} ")
+    print(datetime.datetime.now())
+
 
 # Define function to take drink order
 def take_drink_order(menu_items):
     drink_order = []
     drink_cost = 0
+    drink_quantity= []                                          
+    counter = 0                                                 
+    total_drink_cost = 0                                        
     # Loop to take drink orders
     while True:
         # Prompt user to select an item
@@ -101,19 +134,52 @@ def take_drink_order(menu_items):
             # Add selected item to the order
             drink_item = menu_items[int(item_num) - 1]
             drink_order.append(drink_item)
+            drink_quantity_input = int(input("How many do you want?    "))           
+            drink_quantity.append(drink_quantity_input)                               
+            drink_cost = drink_item.price * float(drink_quantity[counter])                 
+            total_drink_cost += drink_cost                                                
+            counter += 1                                                                
             drink_cost += drink_item.price
         else:
             print("Invalid item number. Please try again.")
 
+
     print("\nYour Drink Order:")
+    ### QUESTION should we open the file here and write the following to the file instead of the current method?
     for i, item in enumerate(drink_order, start=1):
-        print(f"{i}. {item.name} - £{item.price}")
-    print(f"Total Cost: £{drink_cost}")
+        with open('orders.txt', 'a') as outfile:
+            outfile.write('\n')
+            outfile.write(item.name)    
+            outfile.write('\n')
+            outfile.write("Quantity  ")
+            outfile.write(str(drink_quantity[ i-1 ]))
+            outfile.write('\n')
+            outfile.write("Item price  ")
+            outfile.write(str(item.price))
+            outfile.write('\n')
+
+        print(f"{i}. {item.name}, x{drink_quantity[ i-1 ]} - £{item.price}")   ### QUESTION SHOULD THIS BE IN THE LOOP LIKE FOOD
+    print(f"Total Cost: £{total_drink_cost}")
+    with open('orders.txt', 'a') as outfile:
+        outfile.write('\n')
+        outfile.write("Total Drink Cost is  £")
+        outfile.write(str(total_drink_cost))               ### WRITE TO FILE ?
 
 # Prompt user to order
 
 
+# init file
+
+with open('orders.txt', 'a') as outfile:
+    outfile.write('\n')
+    outfile.write('\n')
+    outfile.write("megabytes Order")
+    outfile.write('\n')
+    outfile.write(str(datetime.datetime.now()))
+    outfile.write('\n')
+
 # Loop to handle orders
+
 start_order = input("\nWhat would you like to order? (1 for Food) or (2 for Drinks) (enter '0' to exit): ")
 while start_order != "0":
     if start_order == "1":
@@ -129,3 +195,6 @@ while start_order != "0":
     start_order = input("\nWhat would you like to order? (1 for Food) or (2 for Drinks) (enter '0' to exit): ")
 
 print("Thank you for your order!")
+file1 = open("orders.txt", "r")
+print(file1.read())
+file1.close() 
