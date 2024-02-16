@@ -29,7 +29,7 @@ f6 = Food("Stroopwafel         ", 0.5)
 
 m1 = Menu("Megabytes", 30)
 
-#  add all drink objetcs to drimk dictionary
+#  add all drink objects to list
 
 m1.add_drink(d1)
 m1.add_drink(d2)
@@ -38,10 +38,8 @@ m1.add_drink(d4)
 m1.add_drink(d5)
 m1.add_drink(d6)
 
-#  add all food objetcs to drimk list
 
-
-#  add all food objetcs to drimk list
+#  add all food objetcs to list
 
 m1.add_food(f1)
 m1.add_food(f2)
@@ -51,14 +49,15 @@ m1.add_food(f5)
 m1.add_food(f6)
 
 # Greetings
+# Define functions 
 def get_day_of_week():
-    # Get the current day of the week (Monday is 0 and Sunday is 6)
+# Get the current day of the week (Monday is 0 and Sunday is 6)
     return datetime.datetime.now().weekday()
 
 def generate_greeting():
     day_of_week = get_day_of_week()
 
-
+# Add greetings to a list
     greetings = [
                 "Freshly baked Croissants scare Monday Blues away!",
         "Get a Brew and dont let the tensions stew. The Coffee smells extra nice today.",
@@ -68,9 +67,9 @@ def generate_greeting():
         "Lets Celebrate weekend with an Americano",
         "Enjoy your lazy day while it lasts. Binge Eat!"
     ]
-    
-   
-    
+
+
+
     today_greeting = greetings[day_of_week]
 
     return today_greeting
@@ -81,9 +80,10 @@ def generate_current_day():
 
     return current_day
 
-# Example usage
+ 
 current_greeting = generate_greeting()
 current_day = generate_current_day()
+# print the welcome message, greeting and current day
 
 print(Fore.GREEN +Style.DIM+                "Welcome to Megabyte.")
 user_name = input(Fore.WHITE+"What is your name?: ").capitalize()
@@ -91,16 +91,14 @@ print(Fore.GREEN + Style.DIM+f"Hi {user_name}! How is your {current_day} going. 
 
 
 # init file
-        
+
 
 actual_time = strftime("%Y-%m-%d %H-%M-%S", gmtime())
 filename = user_name + " - " + str(actual_time) + ".txt"
 
 
-
-
 outfile = open(filename, "w")
-# with open('orders.txt', 'a') as outfile:
+
 outfile.write('\n')
 outfile.write('\n')
 outfile.write(f"Order made by: {user_name}\n")
@@ -147,7 +145,7 @@ def take_food_order(menu_items):
     food_cost = 0
     food_quantity= []                                          
     counter = 0                                                 
-    # total_food_cost = 0                                         
+                                          
     # Loop to take food orders
     while True:
         # Prompt user to select an item
@@ -159,18 +157,16 @@ def take_food_order(menu_items):
             # Add selected item to the order
             food_item = menu_items[int(item_num) - 1]
             food_order.append(food_item)
-            # IMPORTANT place in while loop for integrity
-            
             food_quantity_input = input("How many do you want?    ")
-            
+
             if food_quantity_input.isdigit()>0 and food_quantity_input.isdigit()<7:
-                
+
                 food_quantity.append(food_quantity_input)                 
                 food_cost = food_item.price * float(food_quantity[counter])                 
                 total_food_cost += round(float(food_cost),3)                                                
                 counter += 1 
                 print(Fore.WHITE+"Would you like to order anything else?")      
-              
+
             else:
                 print(Fore.RED+"Invalid item number. Please try again.")
     print(Fore.BLUE+"\nYour Food Order:")
@@ -183,20 +179,19 @@ def take_food_order(menu_items):
             outfile.write("Quantity  ")
             outfile.write(str(food_quantity[ i-1 ]))
             outfile.write('\n')
-            outfile.write("Item price  ")
+            outfile.write("Item price  £")
             outfile.write(str(item.price))
             outfile.write('\n')
 
 
     print(Fore.BLUE+f"Total Cost: £{total_food_cost}")
     with open(filename, 'a') as outfile:
-        # outfile.write('\n')
+        
         outfile.write("""
 Total Food Cost is  £""")
         outfile.write(str(total_food_cost))
         outfile.write('\n')
-### QUESTION have we got this twice, test         
-    # print(f"The order cost is {total_food_cost} ")
+
     print(datetime.datetime.now())
 
 
@@ -207,7 +202,7 @@ def take_drink_order(menu_items):
     drink_cost = 0
     drink_quantity= []                                          
     counter = 0                                                 
-    # total_drink_cost = 0                                        
+                                            
     # Loop to take drink orders
     while True:
         # Prompt user to select an item
@@ -231,7 +226,7 @@ def take_drink_order(menu_items):
 
 
     print(Fore.BLUE+"\nYour Drink Order:")
-    ### QUESTION should we open the file here and write the following to the file instead of the current method?
+
     for i, item in enumerate(drink_order, start=1):
       with open(filename, 'a') as outfile:
         outfile.write('\n')
@@ -240,11 +235,11 @@ def take_drink_order(menu_items):
         outfile.write("Quantity  ")
         outfile.write(str(drink_quantity[ i-1 ]))
         outfile.write('\n')
-        outfile.write("Item price  ")
+        outfile.write("Item price  £")
         outfile.write(str(item.price))
         outfile.write('\n')
 
-        print(Fore.BLUE+ f"{i}. {item.name}  --------- £{item.price} x {drink_quantity[ i-1 ]}")   ### QUESTION SHOULD THIS BE IN THE LOOP LIKE FOOD
+        print(Fore.BLUE+ f"{i}. {item.name}  --------- £{item.price} x {drink_quantity[ i-1 ]}")   
     print(Fore.BLUE + f"Total Cost: £{total_drink_cost}")
     with open(filename, 'a') as outfile:
       # outfile.write('\n')
@@ -252,7 +247,7 @@ def take_drink_order(menu_items):
 Total Drink Cost is  £""")
       # outfile.write('\n')
       outfile.write(str(total_drink_cost))             ### WRITE TO FILE ?
-    
+
 # Prompt user to order
 
 
@@ -285,6 +280,9 @@ with open(filename, 'a') as outfile:
 
 print(Fore.WHITE+ f"""
 Thank you for your order {user_name}!""")
+
+# print receipt from file to screen
+
 file1 = open(filename, "r")
 print(
 "------------------------------------------" +
