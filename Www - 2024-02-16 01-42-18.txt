@@ -1,0 +1,16 @@
+
+
+Order made by: Www
+
+megabytes Order
+2024-02-16 01:42:18.659671
+
+Muffin              
+Quantity  3
+Item price  2.1
+
+Panini              
+Quantity  2
+Item price  2.9
+
+Total Food Cost is  £12.1

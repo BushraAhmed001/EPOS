@@ -1,0 +1,23 @@
+
+
+Order made by: A
+
+megabytes Order
+2024-02-16 10:17:36.805969
+
+Muffin              
+Quantity  2
+Item price  2.1
+
+Croissant           
+Quantity  2
+Item price  1.5
+
+Total Food Cost is  £7.2
+
+Tea               
+Quantity  2
+Item price  1.0
+
+Total Drink Cost is  £2.0
+Total Order Cost is  £9.2
